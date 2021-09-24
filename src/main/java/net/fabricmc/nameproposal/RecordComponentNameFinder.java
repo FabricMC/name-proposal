@@ -24,6 +24,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 public final class RecordComponentNameFinder extends ClassVisitor {
 	static final Handle OBJ_MTH_BOOTSTRAP = new Handle(
@@ -86,22 +87,29 @@ public final class RecordComponentNameFinder extends ClassVisitor {
 				return;
 			}
 
+			assert bootstrapMethodArguments[0] instanceof Type;
+			String recordClassName = ((Type) bootstrapMethodArguments[0]).getInternalName();
+
+			if (!recordClassName.equals(owner)) {
+				System.out.println("found mismatching object method bootstrap record class in caller class " + owner + "::" + id);
+			}
+
 			assert bootstrapMethodArguments[1] instanceof String;
 			String[] names = ((String) bootstrapMethodArguments[1]).split(";");
 			assert names.length == bootstrapMethodArguments.length - 2;
 
 			for (int i = 2; i < bootstrapMethodArguments.length; i++) {
 				if (bootstrapMethodArguments[i] instanceof Handle handle) {
-					if (handle.getTag() == Opcodes.H_GETFIELD && handle.getOwner().equals(owner)) {
+					if (handle.getTag() == Opcodes.H_GETFIELD && handle.getOwner().equals(recordClassName)) {
 						var argName = names[i - 2];
 						put(recordNames, handle.getName(), argName);
 					} else {
 						// valid bytecode but we cannot guess
-						System.out.println("found special constant pool method handle, cannot process");
+						System.out.println("found special constant pool method handle, cannot process: " + owner + "::" + id);
 					}
 				} else {
 					// valid bytecode, may be condy bsm arg, can't process
-					System.out.println("found special bootstrap method arg (maybe condy), cannot process");
+					System.out.println("found special bootstrap method arg (maybe condy), cannot process: " + owner + "::" + id);
 				}
 			}
 		}
