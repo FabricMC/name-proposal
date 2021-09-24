@@ -34,8 +34,7 @@ public final class RecordComponentNameFinder extends ClassVisitor {
 					(Ljava/lang/invoke/MethodHandles$Lookup;\
 					Ljava/lang/String;Ljava/lang/invoke/TypeDescriptor;\
 					Ljava/lang/Class;Ljava/lang/String;\
-					[Ljava/lang/invoke/MethodHandle;)Ljava/lang/Object;
-					""",
+					[Ljava/lang/invoke/MethodHandle;)Ljava/lang/Object;""",
 			false
 	);
 	static final Set<Component> OBJECT_METHODS = Set.of(
