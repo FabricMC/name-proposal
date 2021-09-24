@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+	id 'maven-publish'
+    id "com.diffplug.spotless" version "5.8.2"
+}
+
+sourceCompatibility = 16
+targetCompatibility = 16
+
+group 'net.fabricmc'
+archivesBaseName = 'name-proposal'
+
+def ENV = System.getenv()
+version '0.1.0' + (ENV.GITHUB_ACTIONS ? "" : "+local")
+
+repositories {
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.ow2.asm:asm:9.2'
+    implementation 'org.ow2.asm:asm-commons:9.2'
+    implementation 'org.ow2.asm:asm-tree:9.2'
+    implementation 'org.ow2.asm:asm-util:9.2'
+
+    implementation 'net.fabricmc:mapping-io:0.2.1'
+
+    compileOnly 'cuchaz:enigma:1.4.4'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 16
+}
+
+java {
+    withSourcesJar()
+}
+
+spotless {
+    java {
+        licenseHeaderFile(rootProject.file("HEADER")).yearSeparator(", ")
+    }
+}
+
+checkstyle {
+    configFile = project.file("checkstyle.xml")
+    toolVersion = "9.0"
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+		mavenLocal()
+
+		if (ENV.MAVEN_URL) {
+			repositories.maven {
+				name "fabric"
+				url ENV.MAVEN_URL
+				credentials {
+					username ENV.MAVEN_USERNAME
+					password ENV.MAVEN_PASSWORD
+				}
+			}
+		}
+	}
+}
