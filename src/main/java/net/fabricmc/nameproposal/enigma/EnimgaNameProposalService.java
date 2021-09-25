@@ -70,9 +70,11 @@ public class EnimgaNameProposalService implements JarIndexerService, NameProposa
 			}
 		} else if (obfEntry instanceof LocalVariableEntry paramEntry) {
 			MethodEntry parent = paramEntry.getParent();
+
 			if (parent == null) {
 				return Optional.empty();
 			}
+
 			if (parent.getDesc().equals(EQUALS_DESC) && parent.getName().equals("equals")) {
 				return Optional.of("o");
 			}
