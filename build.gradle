@@ -28,9 +28,9 @@ dependencies {
     implementation 'org.ow2.asm:asm-tree:9.2'
     implementation 'org.ow2.asm:asm-util:9.2'
 
-    implementation 'net.fabricmc:mapping-io:0.2.1'
+    implementation 'net.fabricmc:mapping-io:0.3.0'
 
-    compileOnly 'cuchaz:enigma:1.4.4'
+    compileOnly 'cuchaz:enigma:1.4.5'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -43,6 +43,8 @@ java {
 }
 
 spotless {
+    encoding 'UTF-8'
+    lineEndings 'UNIX'
     java {
         licenseHeaderFile(rootProject.file("HEADER")).yearSeparator(", ")
     }
