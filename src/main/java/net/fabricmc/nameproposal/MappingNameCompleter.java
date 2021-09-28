@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.regex.Pattern;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
@@ -105,6 +107,8 @@ public class MappingNameCompleter {
 			}
 		}
 
+		inheritMappedNamesOfEnclosingClasses(yarn);
+
 		try (MappingWriter mappingWriter = MappingWriter.create(outputYarnMappings, MappingFormat.TINY_2)) {
 			yarn.accept(mappingWriter);
 		}
@@ -132,5 +136,39 @@ public class MappingNameCompleter {
 		MemoryMappingTree mappingTree = new MemoryMappingTree();
 		MappingReader.read(path, mappingTree);
 		return mappingTree;
+	}
+
+	/**
+	 * Based off loom: https://github.com/FabricMC/fabric-loom/commit/98d8f3767253a1a3308542c2e896cbf5f4382033.
+	 */
+	private static void inheritMappedNamesOfEnclosingClasses(MemoryMappingTree tree) {
+		int namedIdx = tree.getNamespaceId("named");
+
+		// The tree does not have an index by intermediary names by default
+		tree.setIndexByDstNames(true);
+
+		for (MappingTree.ClassMapping classEntry : tree.getClasses()) {
+			String intermediaryName = Objects.requireNonNull(classEntry.getSrcName());
+			String namedName = classEntry.getDstName(namedIdx);
+
+			// No named name, or intermediary name equals the named - and inner class.
+			if ((namedName == null || intermediaryName.equals(namedName)) && intermediaryName.contains("$")) {
+				String[] path = intermediaryName.split(Pattern.quote("$"));
+				int parts = path.length;
+
+				for (int i = parts - 2; i >= 0; i--) {
+					String currentPath = String.join("$", Arrays.copyOfRange(path, 0, i + 1));
+
+					String namedParentClass = tree.mapClassName(currentPath, namedIdx);
+
+					if (!namedParentClass.equals(currentPath)) {
+						classEntry.setDstName(namedParentClass
+										+ "$" + String.join("$", Arrays.copyOfRange(path, i + 1, path.length)),
+								namedIdx);
+						break;
+					}
+				}
+			}
+		}
 	}
 }

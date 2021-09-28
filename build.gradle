@@ -12,7 +12,7 @@ group 'net.fabricmc'
 archivesBaseName = 'name-proposal'
 
 def ENV = System.getenv()
-version '0.1.1' + (ENV.GITHUB_ACTIONS ? "" : "+local")
+version '0.1.2' + (ENV.GITHUB_ACTIONS ? "" : "+local")
 
 repositories {
     maven {
