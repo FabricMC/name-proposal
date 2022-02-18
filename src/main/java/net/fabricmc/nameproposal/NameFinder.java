@@ -66,11 +66,6 @@ public class NameFinder {
 
 				for (MappingTree.MethodMapping methodMapping : classMapping.getMethods()) {
 					if (methodMapping.getName(intermediaryId).equals(entry.getKey())) {
-						if (foundMethod) {
-							// There should only ever be 1 method, however there may be multiple fields.
-							throw new RuntimeException("Found duplicate methods: " + entry.getKey());
-						}
-
 						MappingEntry fieldEntry = new MappingEntry(classMapping.getName(intermediaryId), methodMapping.getName(intermediaryId), methodMapping.getDesc(intermediaryId));
 						recordMethodNames.put(fieldEntry, entry.getValue());
 						foundMethod = true;

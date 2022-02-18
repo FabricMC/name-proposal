@@ -21,10 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.regex.Pattern;
@@ -83,13 +81,7 @@ public class MappingNameCompleter {
 			}
 		}
 
-		Set<String> writtenMethods = new HashSet<>();
-
 		for (Map.Entry<MappingEntry, String> entry : methodNames.entrySet()) {
-			if (!writtenMethods.add(entry.getKey().name())) {
-				throw new RuntimeException("Duplicate method name: " + entry.getKey().name());
-			}
-
 			MappingEntry mappingEntry = entry.getKey();
 
 			// Ensure there is a class mapping for this
