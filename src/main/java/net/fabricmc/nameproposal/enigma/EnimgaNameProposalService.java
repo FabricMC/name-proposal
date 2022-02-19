@@ -26,8 +26,10 @@ import cuchaz.enigma.api.service.JarIndexerService;
 import cuchaz.enigma.api.service.NameProposalService;
 import cuchaz.enigma.classprovider.ClassProvider;
 import cuchaz.enigma.translation.mapping.EntryRemapper;
+import cuchaz.enigma.translation.representation.MethodDescriptor;
 import cuchaz.enigma.translation.representation.entry.Entry;
 import cuchaz.enigma.translation.representation.entry.FieldEntry;
+import cuchaz.enigma.translation.representation.entry.LocalVariableEntry;
 import cuchaz.enigma.translation.representation.entry.MethodEntry;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -35,6 +37,7 @@ import net.fabricmc.nameproposal.MappingEntry;
 import net.fabricmc.nameproposal.NameFinder;
 
 public class EnimgaNameProposalService implements JarIndexerService, NameProposalService {
+	private static final MethodDescriptor EQUALS_DESC = new MethodDescriptor("(Ljava/lang/Object;)Z");
 	private Map<String, String> recordNames;
 	Map<MappingEntry, String> fieldNames;
 
@@ -64,6 +67,16 @@ public class EnimgaNameProposalService implements JarIndexerService, NameProposa
 		} else if (obfEntry instanceof MethodEntry methodEntry) {
 			if (methodEntry.getName().startsWith("comp_")) {
 				return Optional.ofNullable(recordNames.get(methodEntry.getName()));
+			}
+		} else if (obfEntry instanceof LocalVariableEntry paramEntry) {
+			MethodEntry parent = paramEntry.getParent();
+
+			if (parent == null) {
+				return Optional.empty();
+			}
+
+			if (parent.getDesc().equals(EQUALS_DESC) && parent.getName().equals("equals")) {
+				return Optional.of("o");
 			}
 		}
 
