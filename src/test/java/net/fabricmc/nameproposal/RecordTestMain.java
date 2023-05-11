@@ -16,15 +16,19 @@
 
 package net.fabricmc.nameproposal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassReader;
 
 public class RecordTestMain {
-	public static void main(String... args) throws Throwable {
+	@Test
+	public void recordComponentNames() throws Throwable {
 		var url = RecordTestMain.class.getResource("./TestRecord.class");
 		var bytes = Files.readAllBytes(Path.of(url.toURI()));
 
@@ -39,10 +43,6 @@ public class RecordTestMain {
 				Map.entry("aBitOfLongName", "aBitOfLongName")
 		);
 
-		if (!expected.equals(records)) {
-			System.out.println("failed, found: " + records);
-		} else {
-			System.out.println("passed");
-		}
+		assertEquals(expected, records);
 	}
 }
