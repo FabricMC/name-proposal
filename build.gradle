@@ -31,6 +31,8 @@ dependencies {
     implementation 'net.fabricmc:mapping-io:0.3.0'
 
     compileOnly 'cuchaz:enigma:1.4.5'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -40,6 +42,10 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
     withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
 }
 
 spotless {
