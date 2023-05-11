@@ -4,12 +4,17 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [16-jdk, 17-jdk]
-    runs-on: ubuntu-20.04
+        java: [17-jdk, 20-jdk]
+    runs-on: ubuntu-22.04
     container:
-      image: openjdk:${{ matrix.java }}
+      image: eclipse-temurin:${{ matrix.java }}
       options: --user root
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew build --stacktrace
+      - run: ./gradlew build --stacktrace --warning-mode fail
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: Test Reports
+          path: build/reports/

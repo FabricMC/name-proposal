@@ -2,11 +2,11 @@ plugins {
     id 'java'
     id 'checkstyle'
 	id 'maven-publish'
-    id "com.diffplug.spotless" version "5.8.2"
+    id "com.diffplug.spotless" version "6.18.0"
 }
 
-sourceCompatibility = 16
-targetCompatibility = 16
+sourceCompatibility = 17
+targetCompatibility = 17
 
 group 'net.fabricmc'
 archivesBaseName = 'name-proposal'
@@ -23,21 +23,21 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.ow2.asm:asm:9.2'
-    implementation 'org.ow2.asm:asm-commons:9.2'
-    implementation 'org.ow2.asm:asm-tree:9.2'
-    implementation 'org.ow2.asm:asm-util:9.2'
+    implementation 'org.ow2.asm:asm:9.5'
+    implementation 'org.ow2.asm:asm-commons:9.5'
+    implementation 'org.ow2.asm:asm-tree:9.5'
+    implementation 'org.ow2.asm:asm-util:9.5'
 
-    implementation 'net.fabricmc:mapping-io:0.3.0'
+    implementation 'net.fabricmc:mapping-io:0.4.0'
 
-    compileOnly 'cuchaz:enigma:1.4.5'
+    compileOnly 'cuchaz:enigma:2.3.1'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 }
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    it.options.release = 16
+    it.options.release = 17
 }
 
 java {
@@ -58,7 +58,7 @@ spotless {
 
 checkstyle {
     configFile = project.file("checkstyle.xml")
-    toolVersion = "9.0"
+    toolVersion = "10.11.0"
 }
 
 publishing {
