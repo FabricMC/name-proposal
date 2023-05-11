@@ -22,14 +22,14 @@ import cuchaz.enigma.api.service.JarIndexerService;
 import cuchaz.enigma.api.service.NameProposalService;
 import cuchaz.enigma.api.service.ObfuscationTestService;
 
-public class NameProposalServiceEnimgaPlugin implements EnigmaPlugin {
+public class NameProposalServiceEnigmaPlugin implements EnigmaPlugin {
 	private static final String ID_PREFIX = "nameproposal:";
 
 	@Override
 	public void init(EnigmaPluginContext ctx) {
 		ctx.registerService(ID_PREFIX + "intermediary_obfuscation_test", ObfuscationTestService.TYPE, IntermediaryObfuscationTestService::new);
 
-		EnimgaNameProposalService service = new EnimgaNameProposalService();
+		EnigmaNameProposalService service = new EnigmaNameProposalService();
 		ctx.registerService(ID_PREFIX + "jar_indexer", JarIndexerService.TYPE, ctx1 -> service);
 		ctx.registerService(ID_PREFIX + "name_proposal", NameProposalService.TYPE, ctx1 -> service);
 	}

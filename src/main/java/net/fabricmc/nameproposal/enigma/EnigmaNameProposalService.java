@@ -34,7 +34,7 @@ import org.objectweb.asm.tree.ClassNode;
 import net.fabricmc.nameproposal.MappingEntry;
 import net.fabricmc.nameproposal.NameFinder;
 
-public class EnimgaNameProposalService implements JarIndexerService, NameProposalService {
+public class EnigmaNameProposalService implements JarIndexerService, NameProposalService {
 	private Map<String, String> recordNames;
 	Map<MappingEntry, String> fieldNames;
 
