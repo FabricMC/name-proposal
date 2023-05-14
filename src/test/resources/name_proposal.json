@@ -1,0 +1,31 @@
+[
+	{
+		"type": "nameproposal:conditional",
+		"delegate": "CODEC",
+		"conditions": [
+			{
+				"type": "nameproposal:static",
+				"static": true
+			},
+			{
+				"type": "nameproposal:descriptor",
+				"value": "Lcom/mojang/serialization/Codec;"
+			}
+		]
+	},
+	{
+		"type": "nameproposal:conditional",
+		"delegate": {
+			"type": "nameproposal:string_argument"
+		},
+		"conditions": [
+			{
+				"type": "nameproposal:static",
+				"static": true
+			},
+			{
+				"type": "nameproposal:internal_init"
+			}
+		]
+	}
+]

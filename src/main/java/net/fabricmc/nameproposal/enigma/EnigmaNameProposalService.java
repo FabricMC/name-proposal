@@ -16,10 +16,18 @@
 
 package net.fabricmc.nameproposal.enigma;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+
+import org.objectweb.asm.tree.ClassNode;
+
+import com.google.gson.JsonParser;
+import com.mojang.serialization.JsonOps;
 
 import cuchaz.enigma.analysis.index.JarIndex;
 import cuchaz.enigma.api.service.JarIndexerService;
@@ -29,10 +37,10 @@ import cuchaz.enigma.translation.mapping.EntryRemapper;
 import cuchaz.enigma.translation.representation.entry.Entry;
 import cuchaz.enigma.translation.representation.entry.FieldEntry;
 import cuchaz.enigma.translation.representation.entry.MethodEntry;
-import org.objectweb.asm.tree.ClassNode;
-
 import net.fabricmc.nameproposal.MappingEntry;
 import net.fabricmc.nameproposal.NameFinder;
+import net.fabricmc.nameproposal.NameProposalConfig;
+import net.fabricmc.nameproposal.registry.Registry;
 
 public class EnigmaNameProposalService implements JarIndexerService, NameProposalService {
 	private Map<String, String> recordNames;
@@ -40,7 +48,7 @@ public class EnigmaNameProposalService implements JarIndexerService, NameProposa
 
 	@Override
 	public void acceptJar(Set<String> classNames, ClassProvider classProvider, JarIndex jarIndex) {
-		NameFinder nameFinder = new NameFinder();
+		NameFinder nameFinder = createNameFinder();
 
 		for (String className : classNames) {
 			ClassNode classNode = classProvider.get(className);
@@ -68,5 +76,21 @@ public class EnigmaNameProposalService implements JarIndexerService, NameProposa
 		}
 
 		return Optional.empty();
+	}
+
+	private static NameFinder createNameFinder() {
+		Registry.init();
+		File file = new File("./" + NameProposalConfig.FILE_NAME);
+
+		try (var reader = new FileReader(file)) {
+			var tree = JsonParser.parseReader(reader);
+
+			var result = NameProposalConfig.CODEC.parse(JsonOps.INSTANCE, tree);
+			var config = result.getOrThrow(false, s -> { });
+
+			return new NameFinder(config);
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to load name proposal config", e);
+		}
 	}
 }
