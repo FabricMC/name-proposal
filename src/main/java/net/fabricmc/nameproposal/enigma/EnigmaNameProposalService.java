@@ -25,10 +25,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.objectweb.asm.tree.ClassNode;
-
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
-
 import cuchaz.enigma.analysis.index.JarIndex;
 import cuchaz.enigma.api.service.JarIndexerService;
 import cuchaz.enigma.api.service.NameProposalService;
@@ -37,6 +35,7 @@ import cuchaz.enigma.translation.mapping.EntryRemapper;
 import cuchaz.enigma.translation.representation.entry.Entry;
 import cuchaz.enigma.translation.representation.entry.FieldEntry;
 import cuchaz.enigma.translation.representation.entry.MethodEntry;
+
 import net.fabricmc.nameproposal.MappingEntry;
 import net.fabricmc.nameproposal.NameFinder;
 import net.fabricmc.nameproposal.NameProposalConfig;
