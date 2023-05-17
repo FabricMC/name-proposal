@@ -22,7 +22,7 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public class StringArgumentFieldNameProvider extends FieldNameProvider {
+public class StringArgumentFieldNameProvider implements FieldNameProvider {
 	public static final StringArgumentFieldNameProvider INSTANCE = new StringArgumentFieldNameProvider();
 	protected static final Codec<StringArgumentFieldNameProvider> CODEC = Codec.unit(INSTANCE);
 
@@ -81,7 +81,7 @@ public class StringArgumentFieldNameProvider extends FieldNameProvider {
 	}
 
 	@Override
-	protected Codec<StringArgumentFieldNameProvider> getCodec() {
+	public Codec<StringArgumentFieldNameProvider> getCodec() {
 		return CODEC;
 	}
 

@@ -45,10 +45,10 @@ public class FieldTestMain {
 		Registry.init();
 	}
 
-	private static final FieldNameProvider EXPECTED_NAME_PROVIDER = new SequenceFieldNameProvider(
-		new ConditionalFieldNameProvider(new ConstantFieldNameProvider("CODEC"), new StaticFieldPredicate(true), new DescriptorFieldPredicate("Lcom/mojang/serialization/Codec;")),
-		new ConditionalFieldNameProvider(StringArgumentFieldNameProvider.INSTANCE, new StaticFieldPredicate(true), InternalInitFieldPredicate.INSTANCE)
-	);
+	private static final FieldNameProvider EXPECTED_NAME_PROVIDER = new SequenceFieldNameProvider(List.of(
+		new ConditionalFieldNameProvider(new ConstantFieldNameProvider("CODEC"), List.of(new StaticFieldPredicate(true), new DescriptorFieldPredicate("Lcom/mojang/serialization/Codec;"))),
+		new ConditionalFieldNameProvider(StringArgumentFieldNameProvider.INSTANCE, List.of(new StaticFieldPredicate(true), InternalInitFieldPredicate.INSTANCE))
+	));
 
 	@Test
 	public void parseConfig() throws Throwable {

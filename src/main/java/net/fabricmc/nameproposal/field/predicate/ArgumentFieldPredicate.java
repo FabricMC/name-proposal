@@ -53,7 +53,7 @@ public class ArgumentFieldPredicate extends StringFieldPredicate {
 	}
 
 	@Override
-	protected Codec<ArgumentFieldPredicate> getCodec() {
+	public Codec<ArgumentFieldPredicate> getCodec() {
 		return CODEC;
 	}
 

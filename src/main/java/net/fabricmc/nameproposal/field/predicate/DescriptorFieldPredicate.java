@@ -38,7 +38,7 @@ public class DescriptorFieldPredicate extends StringFieldPredicate {
 	}
 
 	@Override
-	protected Codec<DescriptorFieldPredicate> getCodec() {
+	public Codec<DescriptorFieldPredicate> getCodec() {
 		return CODEC;
 	}
 

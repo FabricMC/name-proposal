@@ -20,7 +20,7 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public class InternalInitFieldPredicate extends FieldPredicate {
+public class InternalInitFieldPredicate implements FieldPredicate {
 	public static final InternalInitFieldPredicate INSTANCE = new InternalInitFieldPredicate();
 	protected static final Codec<InternalInitFieldPredicate> CODEC = Codec.unit(INSTANCE);
 
@@ -34,7 +34,7 @@ public class InternalInitFieldPredicate extends FieldPredicate {
 	}
 
 	@Override
-	protected Codec<InternalInitFieldPredicate> getCodec() {
+	public Codec<InternalInitFieldPredicate> getCodec() {
 		return CODEC;
 	}
 

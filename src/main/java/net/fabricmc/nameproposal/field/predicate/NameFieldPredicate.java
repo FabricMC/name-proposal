@@ -38,7 +38,7 @@ public class NameFieldPredicate extends StringFieldPredicate {
 	}
 
 	@Override
-	protected Codec<NameFieldPredicate> getCodec() {
+	public Codec<NameFieldPredicate> getCodec() {
 		return CODEC;
 	}
 

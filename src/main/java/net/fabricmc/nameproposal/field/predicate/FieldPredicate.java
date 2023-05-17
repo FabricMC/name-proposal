@@ -20,8 +20,8 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public abstract class FieldPredicate {
-	public abstract boolean test(FieldData field);
+public interface FieldPredicate {
+	boolean test(FieldData field);
 
-	protected abstract Codec<? extends FieldPredicate> getCodec();
+	Codec<? extends FieldPredicate> getCodec();
 }

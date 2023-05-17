@@ -38,7 +38,7 @@ public class MethodOwnerFieldPredicate extends StringFieldPredicate {
 	}
 
 	@Override
-	protected Codec<MethodOwnerFieldPredicate> getCodec() {
+	public Codec<MethodOwnerFieldPredicate> getCodec() {
 		return CODEC;
 	}
 

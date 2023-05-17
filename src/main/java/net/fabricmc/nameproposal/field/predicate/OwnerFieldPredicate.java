@@ -38,7 +38,7 @@ public class OwnerFieldPredicate extends StringFieldPredicate {
 	}
 
 	@Override
-	protected Codec<OwnerFieldPredicate> getCodec() {
+	public Codec<OwnerFieldPredicate> getCodec() {
 		return CODEC;
 	}
 

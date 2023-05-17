@@ -21,14 +21,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public class EnumFieldPredicate extends FieldPredicate {
+public record EnumFieldPredicate(boolean isEnum) implements FieldPredicate {
 	protected static final Codec<EnumFieldPredicate> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(
-			Codec.BOOL.fieldOf("enum").forGetter(predicate -> predicate.isEnum)
+			Codec.BOOL.fieldOf("enum").forGetter(EnumFieldPredicate::isEnum)
 		).apply(instance, EnumFieldPredicate::new);
 	});
-
-	private final boolean isEnum;
 
 	public EnumFieldPredicate(boolean isEnum) {
 		this.isEnum = isEnum;
@@ -40,25 +38,12 @@ public class EnumFieldPredicate extends FieldPredicate {
 	}
 
 	@Override
-	protected Codec<EnumFieldPredicate> getCodec() {
+	public Codec<EnumFieldPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
 	public String toString() {
 		return "Enum = " + this.isEnum;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof EnumFieldPredicate enumPredicate)) return false;
-
-		return this.isEnum == enumPredicate.isEnum;
-	}
-
-	@Override
-	public int hashCode() {
-		return this.isEnum ? 1 : 0;
 	}
 }

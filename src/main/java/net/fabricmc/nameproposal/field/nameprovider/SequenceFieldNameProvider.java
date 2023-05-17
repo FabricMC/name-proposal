@@ -17,7 +17,6 @@
 package net.fabricmc.nameproposal.field.nameprovider;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -25,22 +24,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.nameproposal.field.FieldData;
 import net.fabricmc.nameproposal.registry.Codecs;
 
-public class SequenceFieldNameProvider extends FieldNameProvider {
+public record SequenceFieldNameProvider(List<FieldNameProvider> nameProviders) implements FieldNameProvider {
 	protected static final Codec<SequenceFieldNameProvider> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(
-			Codecs.listOrUnit(FieldNameProviders.CODEC).fieldOf("name_providers").forGetter(nameProvider -> nameProvider.nameProviders)
+			Codecs.listOrUnit(FieldNameProviders.CODEC).fieldOf("name_providers").forGetter(SequenceFieldNameProvider::nameProviders)
 		).apply(instance, SequenceFieldNameProvider::new);
 	});
-
-	protected final List<FieldNameProvider> nameProviders;
-
-	public SequenceFieldNameProvider(List<FieldNameProvider> nameProviders) {
-		this.nameProviders = List.copyOf(nameProviders);
-	}
-
-	public SequenceFieldNameProvider(FieldNameProvider... nameProviders) {
-		this.nameProviders = List.of(nameProviders);
-	}
 
 	@Override
 	public String getName(FieldData field) {
@@ -53,25 +42,12 @@ public class SequenceFieldNameProvider extends FieldNameProvider {
 	}
 
 	@Override
-	protected Codec<SequenceFieldNameProvider> getCodec() {
+	public Codec<SequenceFieldNameProvider> getCodec() {
 		return CODEC;
 	}
 
 	@Override
 	public String toString() {
 		return this.nameProviders.toString();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof SequenceFieldNameProvider sequence)) return false;
-
-		return Objects.equals(this.nameProviders, sequence.nameProviders);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.nameProviders.hashCode();
 	}
 }

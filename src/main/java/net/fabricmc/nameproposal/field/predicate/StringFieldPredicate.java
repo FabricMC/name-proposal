@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public abstract class StringFieldPredicate extends FieldPredicate {
+public abstract class StringFieldPredicate implements FieldPredicate {
 	protected final String value;
 
 	protected StringFieldPredicate(String value) {

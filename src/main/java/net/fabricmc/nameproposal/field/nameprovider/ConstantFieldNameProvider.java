@@ -16,25 +16,17 @@
 
 package net.fabricmc.nameproposal.field.nameprovider;
 
-import java.util.Objects;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public class ConstantFieldNameProvider extends FieldNameProvider {
+public record ConstantFieldNameProvider(String name) implements FieldNameProvider {
 	protected static final Codec<ConstantFieldNameProvider> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(
-			Codec.STRING.fieldOf("name").forGetter(nameProvider -> nameProvider.name)
+			Codec.STRING.fieldOf("name").forGetter(ConstantFieldNameProvider::name)
 		).apply(instance, ConstantFieldNameProvider::new);
 	});
-
-	protected final String name;
-
-	public ConstantFieldNameProvider(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public String getName(FieldData field) {
@@ -42,24 +34,12 @@ public class ConstantFieldNameProvider extends FieldNameProvider {
 	}
 
 	@Override
-	protected Codec<ConstantFieldNameProvider> getCodec() {
+	public Codec<ConstantFieldNameProvider> getCodec() {
 		return CODEC;
 	}
 
 	@Override
 	public String toString() {
 		return "Constant[" + this.name + "]";
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ConstantFieldNameProvider constant)) return false;
-		return Objects.equals(this.name, constant.name);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.name.hashCode();
 	}
 }

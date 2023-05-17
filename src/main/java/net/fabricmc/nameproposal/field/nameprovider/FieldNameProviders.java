@@ -26,9 +26,9 @@ import net.fabricmc.nameproposal.registry.Registry;
 public final class FieldNameProviders {
 	private static final Registry<Codec<? extends FieldNameProvider>> REGISTRY = new Registry<>();
 
-	public static final Codec<ConstantFieldNameProvider> STRING_CODEC = Codec.STRING.xmap(ConstantFieldNameProvider::new, nameProvider -> nameProvider.name);
+	public static final Codec<ConstantFieldNameProvider> STRING_CODEC = Codec.STRING.xmap(ConstantFieldNameProvider::new, ConstantFieldNameProvider::name);
 	public static final Codec<FieldNameProvider> DISPATCH_CODEC = REGISTRY.dispatchStable(FieldNameProvider::getCodec, Function.identity());
-	public static final Codec<SequenceFieldNameProvider> LIST_CODEC = Codec.list(DISPATCH_CODEC).xmap(SequenceFieldNameProvider::new, nameProvider -> nameProvider.nameProviders);
+	public static final Codec<SequenceFieldNameProvider> LIST_CODEC = Codec.list(DISPATCH_CODEC).xmap(SequenceFieldNameProvider::new, SequenceFieldNameProvider::nameProviders);
 
 	public static final Codec<FieldNameProvider> CODEC = Codec.either(Codec.either(STRING_CODEC, DISPATCH_CODEC).xmap(either -> {
 		return either.map(Function.identity(), Function.identity());

@@ -20,8 +20,8 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public abstract class FieldNameProvider {
-	public abstract String getName(FieldData field);
+public interface FieldNameProvider {
+	String getName(FieldData field);
 
-	protected abstract Codec<? extends FieldNameProvider> getCodec();
+	Codec<? extends FieldNameProvider> getCodec();
 }

@@ -21,18 +21,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
-public class StaticFieldPredicate extends FieldPredicate {
+public record StaticFieldPredicate(boolean isStatic) implements FieldPredicate {
 	protected static final Codec<StaticFieldPredicate> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(
-			Codec.BOOL.fieldOf("static").forGetter(predicate -> predicate.isStatic)
+			Codec.BOOL.fieldOf("static").forGetter(StaticFieldPredicate::isStatic)
 		).apply(instance, StaticFieldPredicate::new);
 	});
-
-	private final boolean isStatic;
-
-	public StaticFieldPredicate(boolean isStatic) {
-		this.isStatic = isStatic;
-	}
 
 	@Override
 	public boolean test(FieldData field) {
@@ -40,25 +34,12 @@ public class StaticFieldPredicate extends FieldPredicate {
 	}
 
 	@Override
-	protected Codec<StaticFieldPredicate> getCodec() {
+	public Codec<StaticFieldPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
 	public String toString() {
 		return "Static = " + this.isStatic;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof StaticFieldPredicate staticPredicate)) return false;
-
-		return this.isStatic == staticPredicate.isStatic;
-	}
-
-	@Override
-	public int hashCode() {
-		return this.isStatic ? 1 : 0;
 	}
 }
