@@ -19,6 +19,10 @@ repositories {
         name = 'Fabric'
         url = 'https://maven.fabricmc.net/'
     }
+    maven {
+        name = 'Mojang'
+        url = 'https://libraries.minecraft.net/'
+    }
     mavenCentral()
 }
 
@@ -29,6 +33,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-util:9.5'
 
     implementation 'net.fabricmc:mapping-io:0.4.0'
+    implementation 'com.mojang:datafixerupper:6.0.10'
 
     compileOnly 'cuchaz:enigma:2.3.1'
 

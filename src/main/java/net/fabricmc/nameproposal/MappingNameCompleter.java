@@ -16,6 +16,7 @@
 
 package net.fabricmc.nameproposal;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +30,8 @@ import java.util.regex.Pattern;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
+import com.google.gson.JsonParser;
+import com.mojang.serialization.JsonOps;
 
 import net.fabricmc.mappingio.MappedElementKind;
 import net.fabricmc.mappingio.MappingReader;
@@ -36,15 +39,16 @@ import net.fabricmc.mappingio.MappingWriter;
 import net.fabricmc.mappingio.format.MappingFormat;
 import net.fabricmc.mappingio.tree.MappingTree;
 import net.fabricmc.mappingio.tree.MemoryMappingTree;
+import net.fabricmc.nameproposal.registry.Registry;
 
 public class MappingNameCompleter {
-	// <intermediaryJar> <inputYarnMappings> <inputIntermediaryMappings> <outputYarnMappings>
+	// <intermediaryJar> <inputYarnMappings> <inputIntermediaryMappings> <outputYarnMappings> <config>
 	public static void main(String[] args) throws IOException {
-		completeNames(Paths.get(args[0]), Paths.get(args[1]), Paths.get(args[2]), Paths.get(args[3]));
+		completeNames(Paths.get(args[0]), Paths.get(args[1]), Paths.get(args[2]), Paths.get(args[3]), Paths.get(args[4]));
 	}
 
-	public static void completeNames(Path intermediaryJar, Path inputYarnMappings, Path inputIntermediaryMappings, Path outputYarnMappings) throws IOException {
-		NameFinder nameFinder = new NameFinder();
+	public static void completeNames(Path intermediaryJar, Path inputYarnMappings, Path inputIntermediaryMappings, Path outputYarnMappings, Path configPath) throws IOException {
+		NameFinder nameFinder = createNameFinder(configPath);
 
 		acceptJar(nameFinder, intermediaryJar);
 
@@ -121,6 +125,19 @@ public class MappingNameCompleter {
 
 				nameFinder.accept(classNode);
 			}
+		}
+	}
+
+	private static NameFinder createNameFinder(Path configPath) throws IOException {
+		Registry.init();
+
+		try (var reader = new FileReader(configPath.toFile())) {
+			var tree = JsonParser.parseReader(reader);
+
+			var result = NameProposalConfig.CODEC.parse(JsonOps.INSTANCE, tree);
+			var config = result.getOrThrow(false, s -> { });
+
+			return new NameFinder(config);
 		}
 	}
 
