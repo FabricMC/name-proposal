@@ -80,11 +80,11 @@ public class NameFinder {
 			}
 
 			if (!foundField) {
-				throw new RuntimeException("Failed to find field for " + entry.getKey());
+				System.err.println("Failed to find field for " + entry);
 			}
 
 			if (!foundMethod) {
-				throw new RuntimeException("Failed to find method for " + entry.getKey());
+				System.err.println("Failed to find method for " + entry);
 			}
 		}
 	}
