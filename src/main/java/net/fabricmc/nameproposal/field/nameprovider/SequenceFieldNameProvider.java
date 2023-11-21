@@ -24,6 +24,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.nameproposal.field.FieldData;
 import net.fabricmc.nameproposal.registry.Codecs;
 
+/**
+ * A field name provider that applies a list of field name providers in sequence.
+ *
+ * <p>If the first provider returns a name, that name is used; otherwise, the next
+ * provider is tried, and so on.
+ *
+ * <p>If no provider returns a name, {@code null} is returned.
+ */
 public record SequenceFieldNameProvider(List<FieldNameProvider> nameProviders) implements FieldNameProvider {
 	protected static final Codec<SequenceFieldNameProvider> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(

@@ -20,6 +20,10 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
+/**
+ * Represents a method of deriving a field name from field data, such as
+ * the field's type or the method being called to initialize the field.
+ */
 public interface FieldNameProvider {
 	String getName(FieldData field);
 

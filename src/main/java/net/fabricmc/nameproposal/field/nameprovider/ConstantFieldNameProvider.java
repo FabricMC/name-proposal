@@ -21,6 +21,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
+/**
+ * A field name provider that returns a given name.
+ *
+ * <p>This provider can be used as the delegate of a conditional provider
+ * to restrict the name to certain fields matching a predicate.
+ */
 public record ConstantFieldNameProvider(String name) implements FieldNameProvider {
 	protected static final Codec<ConstantFieldNameProvider> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(

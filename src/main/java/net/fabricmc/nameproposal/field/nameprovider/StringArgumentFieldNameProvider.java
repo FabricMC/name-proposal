@@ -22,6 +22,13 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.nameproposal.field.FieldData;
 
+/**
+ * A field name provider that returns a name representing the first string
+ * argument of the method call that initializes the field.
+ *
+ * <p>This provider can be used to name enum fields or fields that are
+ * initialized by calling a method that registers the field's value to a map.
+ */
 public class StringArgumentFieldNameProvider implements FieldNameProvider {
 	public static final StringArgumentFieldNameProvider INSTANCE = new StringArgumentFieldNameProvider();
 	protected static final Codec<StringArgumentFieldNameProvider> CODEC = Codec.unit(INSTANCE);

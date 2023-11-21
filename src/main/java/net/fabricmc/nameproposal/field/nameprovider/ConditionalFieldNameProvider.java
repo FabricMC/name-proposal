@@ -26,6 +26,12 @@ import net.fabricmc.nameproposal.field.predicate.FieldPredicate;
 import net.fabricmc.nameproposal.field.predicate.FieldPredicates;
 import net.fabricmc.nameproposal.registry.Codecs;
 
+/**
+ * A field name provider that delegates to another provider depending on
+ * whether the field matches all of the given predicates.
+ *
+ * <p>If any of the predicates are not matched, {@code null} is returned.
+ */
 public record ConditionalFieldNameProvider(FieldNameProvider delegate, List<FieldPredicate> conditions) implements FieldNameProvider {
 	protected static final Codec<ConditionalFieldNameProvider> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(
