@@ -16,13 +16,38 @@
 
 package net.fabricmc.nameproposal.field;
 
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+
 public record FieldData(
-		String owner,
-		String name,
-		String descriptor,
-		String methodOwner,
-		String methodName,
+		FieldInsnNode fieldNode,
+		MethodInsnNode methodNode,
 		Object[] args,
 		boolean isStatic,
 		boolean isEnum
-) { }
+) {
+	public String owner() {
+		return this.fieldNode.owner;
+	}
+
+	public String name() {
+		return this.fieldNode.name;
+	}
+
+	public String descriptor() {
+		return this.fieldNode.desc;
+	}
+
+	public String methodOwner() {
+		return this.methodNode.owner;
+	}
+
+	public String methodName() {
+		return this.methodNode.name;
+	}
+
+	@Override
+	public String toString() {
+		return this.owner() + (this.isStatic ? "." : "#") + this.name();
+	}
+}

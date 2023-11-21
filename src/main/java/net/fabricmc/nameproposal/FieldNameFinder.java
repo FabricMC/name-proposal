@@ -113,7 +113,7 @@ public class FieldNameFinder {
 			}
 
 			boolean isEnum = enumFields.contains(fieldNode.desc + fieldNode.name);
-			var field = new FieldData(fieldNode.owner, fieldNode.name, fieldNode.desc, methodNode.owner, methodNode.name, args, true, isEnum);
+			var field = new FieldData(fieldNode, methodNode, args, true, isEnum);
 			var name = nameProvider.getName(field);
 
 			if (name != null) {
