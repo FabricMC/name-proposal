@@ -24,7 +24,7 @@ import net.fabricmc.nameproposal.field.nameprovider.FieldNameProviders;
 import net.fabricmc.nameproposal.registry.Codecs;
 
 public record NameProposalConfig(FieldNameProvider fieldNameProvider, int version) {
-	public static final String FILE_NAME = "name_proposal.json";
+	public static final String SYSTEM_PROPERTY_KEY = "name_proposal_config";
 
 	public static final Codec<NameProposalConfig> CODEC = Codecs.validate(RecordCodecBuilder.create(instance -> {
 		return instance.group(

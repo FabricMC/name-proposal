@@ -52,7 +52,7 @@ public class FieldTestMain {
 
 	@Test
 	public void parseConfig() throws Throwable {
-		var url = FieldTestMain.class.getClassLoader().getResource(NameProposalConfig.FILE_NAME);
+		var url = FieldTestMain.class.getClassLoader().getResource("name_proposal.json");
 
 		try (var reader = new FileReader(new File(url.toURI()))) {
 			var tree = JsonParser.parseReader(reader);

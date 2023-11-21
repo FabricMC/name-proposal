@@ -19,6 +19,7 @@ package net.fabricmc.nameproposal.enigma;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,7 +80,7 @@ public class EnigmaNameProposalService implements JarIndexerService, NameProposa
 
 	private static NameFinder createNameFinder() {
 		Registry.init();
-		File file = new File("./" + NameProposalConfig.FILE_NAME);
+		File file = new File(System.getProperty(NameProposalConfig.SYSTEM_PROPERTY_KEY));
 
 		try (var reader = new FileReader(file)) {
 			var tree = JsonParser.parseReader(reader);
@@ -89,7 +90,7 @@ public class EnigmaNameProposalService implements JarIndexerService, NameProposa
 
 			return new NameFinder(config);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to load name proposal config", e);
+			throw new UncheckedIOException("Failed to load name proposal config", e);
 		}
 	}
 }
