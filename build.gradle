@@ -12,7 +12,7 @@ group 'net.fabricmc'
 archivesBaseName = 'name-proposal'
 
 def ENV = System.getenv()
-version '0.1.5' + (ENV.GITHUB_ACTIONS ? "" : "+local")
+version '0.2.0' + (ENV.GITHUB_ACTIONS ? "" : "+local")
 
 repositories {
     maven {
@@ -28,7 +28,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-tree:9.5'
     implementation 'org.ow2.asm:asm-util:9.5'
 
-    implementation 'net.fabricmc:mapping-io:0.5.0-beta.1'
+    implementation 'net.fabricmc:mapping-io:0.5.1'
 
     compileOnly 'cuchaz:enigma:2.3.1'
 
