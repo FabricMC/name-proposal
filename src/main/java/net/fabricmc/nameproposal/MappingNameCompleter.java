@@ -101,7 +101,7 @@ public class MappingNameCompleter {
 
 		inheritMappedNamesOfEnclosingClasses(yarn);
 
-		try (MappingWriter mappingWriter = MappingWriter.create(outputYarnMappings, MappingFormat.TINY_2)) {
+		try (MappingWriter mappingWriter = MappingWriter.create(outputYarnMappings, MappingFormat.TINY_2_FILE)) {
 			yarn.accept(mappingWriter);
 		}
 	}
